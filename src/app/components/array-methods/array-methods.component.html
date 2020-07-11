@@ -1,0 +1,19 @@
+<div class="container">
+    <div class="row">
+        <button (click)="newArray()">New Array</button>
+        <button (click)="fillArray()">Fill</button>
+        <button (click)="insertArray()">Insert</button>
+        <button (click)="findArray()">Find</button>
+        <button (click)="deleteArray()">Delete</button>
+        <input type="number" (click)="bindSearchKey($event)" (keyup)="bindSearchKey($event)"/>
+    </div>
+    <div class="row">
+        <div id="arrayMethodVisual-col1">
+        </div>
+        <div id="arrayMethodVisual-col2">
+        </div>
+        <div id="arrayMethodVisual-col3">
+        </div>
+    </div>
+</div>
+
