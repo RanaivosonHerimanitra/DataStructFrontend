@@ -55,7 +55,8 @@ export class ArrayMethodsComponent implements OnInit {
                             .data(jsonCircles)
                             .enter()
                             .append("circle");
- const circleAttributes = circles
+  const circleAttributes = circles
+                        .attr("id", (d:circleData) => { return `circle${d.textIndex}`; })
                         .attr("cx", (d: circleData) => { return d.x_axis; })
                         .attr("cy", (d:circleData) => { return d.y_axis; })
                         .attr("r",  (d:circleData) => { return d.radius; })
@@ -90,7 +91,12 @@ export class ArrayMethodsComponent implements OnInit {
   }
 
   findArray(): boolean {
-    alert(this.searchKey);
+    const chosenCircleId = Math.floor(Math.random() * 19);
+    d3.select(`#circle${chosenCircleId}`).style("fill", "#800080");
+    const data: number[] = Array.from(Array(19).keys())
+    for (let k = 0; k < data.length; k++) {
+      if (k !== chosenCircleId)  d3.select(`#circle${k}`).style("fill", "#69a3b2");
+    }
     return true;
   }
 
