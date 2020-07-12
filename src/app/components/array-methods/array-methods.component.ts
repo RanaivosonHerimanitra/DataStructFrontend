@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import * as d3 from "d3";
 export interface circleData {
   x_axis: number;
@@ -15,13 +16,13 @@ export interface circleData {
 
 export class ArrayMethodsComponent implements OnInit {
   public searchKey: number;
-  constructor() { }
+  constructor(private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.initializeVisual();
   }
 
-  initializeVisual() {
+  public initializeVisual() {
     ['#arrayMethodVisual-col1', '#arrayMethodVisual-col2', '#arrayMethodVisual-col3'].forEach((Id:string, index: number) => {
       this.createVisual(Id, index*50);
     });
@@ -61,11 +62,11 @@ export class ArrayMethodsComponent implements OnInit {
                         .attr("cy", (d:circleData) => { return d.y_axis; })
                         .attr("r",  (d:circleData) => { return d.radius; })
                         .style("fill", (d:circleData) => { return d.color; });
- const text = svg.selectAll("text")
+  const text = svg.selectAll("text")
                          .data(jsonCircles)
                          .enter()
                          .append("text");
- const textLabels = text
+  const textLabels = text
                   .attr("x", (d:circleData) => { return d.x_axis; })
                   .attr("y", (d:circleData) => { return d.y_axis; })
                   .text((d:circleData) => { return d.textIndex; })
@@ -74,33 +75,42 @@ export class ArrayMethodsComponent implements OnInit {
                   .attr("fill", "black");
   }
 
-  newArray(): void {
-    alert('ok');
+  public newArray(): void {
   }
 
-  insertArray(): void {
-
+  public insertArray(): void {
   }
 
-  fillArray(): void {
-  
+  public fillArray(): void {
   }
 
-  bindSearchKey(event: any) {
+  public bindSearchKey(event: any) {
     this.searchKey = event.target.value;
   }
 
-  findArray(): boolean {
+  public findArray(): boolean {
+    if (this.messageOnError()) return false;
     const chosenCircleId = Math.floor(Math.random() * 19);
     d3.select(`#circle${chosenCircleId}`).style("fill", "#800080");
-    const data: number[] = Array.from(Array(19).keys())
+    const data: number[] = Array.from(Array(19).keys());
     for (let k = 0; k < data.length; k++) {
       if (k !== chosenCircleId)  d3.select(`#circle${k}`).style("fill", "#69a3b2");
     }
     return true;
   }
 
-  deleteArray(): void {
+  public deleteArray(): boolean {
+    if (this.messageOnError()) return false;
+    return true;
   }
 
+  private messageOnError(): boolean {
+    if(!this.searchKey) {
+      this._snackBar.open("Le nombre doit exister", "", {
+        duration: 2000,
+      });
+      return true;
+    }
+    return false;
+  }
 }
