@@ -23,7 +23,7 @@ export class ArrayMethodsComponent implements OnInit {
     this.initializeVisual();
   }
 
-  public initializeVisual() {
+  private initializeVisual() {
     ['#arrayMethodVisual-col1', '#arrayMethodVisual-col2', '#arrayMethodVisual-col3'].forEach((Id:string, index: number) => {
       this.createVisual(Id, index*50);
     });
@@ -68,23 +68,31 @@ export class ArrayMethodsComponent implements OnInit {
                          .enter()
                          .append("text");
   const textLabels = text
-                  .attr("x", (d:circleData) => { return d.x_axis; })
-                  .attr("y", (d:circleData) => { return d.y_axis; })
+                  .attr("x", (d:circleData) => { return d.x_axis-5; })
+                  .attr("y", (d:circleData) => { return d.y_axis-5; })
                   .text((d:circleData) => { return d.textIndex; })
                   .attr("font-family", "sans-serif")
-                  .attr("font-size", "15px")
+                  .attr("font-size", "11.5px")
+                  .attr("font-weight", "bold")
                   .attr("fill", "black");
   }
 
   public newArray(): void {
-    // subscribe to observable
-    // then display index with value
+    d3.selectAll("svg").remove();
+    this.initializeVisual();
   }
 
-  public insertArray(): void {
+  public insertArray(): boolean {
+    if (this.messageOnError()) return false;
+    return true;
   }
 
   public fillArray(): void {
+    const textIndexes: number[] = Array.from(Array(19).keys());
+    for (let k = 0; k < textIndexes.length; k++) {
+      const selectedNode = d3.selectAll("text").filter((data:circleData) => data.textIndex === k);
+      if (selectedNode) selectedNode.text(`<${k}:${Math.floor(Math.random() * 999)}>`).attr("x", (d:circleData) => { return d.x_axis-7; }).attr("y", (d:circleData) => { return d.y_axis-7; });
+    }
   }
 
   public bindSearchKey(event: any) {
