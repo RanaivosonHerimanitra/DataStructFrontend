@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as d3 from "d3";
+export const NUMBER_MUST_EXIST: string = "Le nombre doit exister";
 export interface circleData {
   x_axis: number;
   y_axis: number;
@@ -58,7 +59,7 @@ export class ArrayMethodsComponent implements OnInit {
                             .append("circle");
   const circleAttributes = circles
                         .attr("id", (d:circleData) => { return `circle${d.textIndex}`; })
-                        .attr("cx", (d: circleData) => { return d.x_axis; })
+                        .attr("cx", (d:circleData) => { return d.x_axis; })
                         .attr("cy", (d:circleData) => { return d.y_axis; })
                         .attr("r",  (d:circleData) => { return d.radius; })
                         .style("fill", (d:circleData) => { return d.color; });
@@ -76,6 +77,8 @@ export class ArrayMethodsComponent implements OnInit {
   }
 
   public newArray(): void {
+    // subscribe to observable
+    // then display index with value
   }
 
   public insertArray(): void {
@@ -101,12 +104,16 @@ export class ArrayMethodsComponent implements OnInit {
 
   public deleteArray(): boolean {
     if (this.messageOnError()) return false;
+    const chosenCircleId = Math.floor(Math.random() * 19);
+    d3.select(`#circle${chosenCircleId}`).style("fill", "grey");
+    const selectedNode = d3.selectAll("text").filter((data:circleData) => data.textIndex === chosenCircleId);
+    if (selectedNode) selectedNode.text("--");
     return true;
   }
 
   private messageOnError(): boolean {
     if(!this.searchKey) {
-      this._snackBar.open("Le nombre doit exister", "", {
+      this._snackBar.open(NUMBER_MUST_EXIST, "", {
         duration: 2000,
       });
       return true;
