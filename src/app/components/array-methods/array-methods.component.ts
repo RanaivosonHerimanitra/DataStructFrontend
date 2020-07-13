@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as d3 from "d3";
-export const NUMBER_MUST_EXIST: string = "Le nombre doit exister";
+export const NUMBER_MUST_EXIST: string = "Number must exist";
 export interface circleData {
   x_axis: number;
   y_axis: number;
