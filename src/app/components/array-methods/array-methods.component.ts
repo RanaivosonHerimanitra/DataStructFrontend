@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as d3 from "d3";
+import { ArrayMethodsService } from '../../services/array-methods.service';
 export const NUMBER_MUST_EXIST: string = "Number must exist";
 export interface circleData {
   x_axis: number;
@@ -17,10 +18,14 @@ export interface circleData {
 
 export class ArrayMethodsComponent implements OnInit {
   public searchKey: number;
-  constructor(private _snackBar: MatSnackBar) { }
+  public binarySearchResult$: any;
+  constructor(private _snackBar: MatSnackBar, private arrayMethodsService: ArrayMethodsService) {
+    this.binarySearchResult$ = this.arrayMethodsService.getBinarySearchResult();
+  }
 
   ngOnInit(): void {
     this.initializeVisual();
+    
   }
 
   private initializeVisual() {
