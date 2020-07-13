@@ -1,7 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as d3 from "d3";
-import { ArrayMethodsService } from '../../services/array-methods.service';
+import { ArrayMethodsService, BinarySearchResult, BinarySearchQuery } from '../../services/array-methods.service';
+import { Observable } from 'rxjs';
 export const NUMBER_MUST_EXIST: string = "Number must exist";
 export interface circleData {
   x_axis: number;
@@ -18,14 +19,15 @@ export interface circleData {
 
 export class ArrayMethodsComponent implements OnInit {
   public searchKey: number;
-  public binarySearchResult$: any;
+  public binarySearchResult$: Observable<BinarySearchResult>;
+  private query: BinarySearchQuery = {Array: [0, 1, 2,14,25], searchKey: 14};
   constructor(private _snackBar: MatSnackBar, private arrayMethodsService: ArrayMethodsService) {
-    this.binarySearchResult$ = this.arrayMethodsService.getBinarySearchResult();
+    this.binarySearchResult$ = this.arrayMethodsService.getBinarySearchResult(this.query);
   }
 
   ngOnInit(): void {
     this.initializeVisual();
-    
+    this.binarySearchResult$.subscribe((data: BinarySearchResult) => console.log(data));
   }
 
   private initializeVisual() {

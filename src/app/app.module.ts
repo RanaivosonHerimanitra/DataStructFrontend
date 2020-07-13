@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ArrayMethodsComponent } from './components/array-methods/array-methods.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { ArrayMethodsComponent } from './components/array-methods/array-methods.
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     MatTableModule, MatSliderModule, MatCheckboxModule, MatCardModule, MatDividerModule, MatSnackBarModule
   ],
   providers: [],
