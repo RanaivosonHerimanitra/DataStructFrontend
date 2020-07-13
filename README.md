@@ -14,3 +14,8 @@ Using c# as backend, and angular as frontend, I try to illustrate algorithms lik
 * Linked lists
 * Tree structures
 
+### Learning
+
+From a learning perspective, this project allows one to learn angular: components, services, routing and manipulating data from a backend service.
+
+
