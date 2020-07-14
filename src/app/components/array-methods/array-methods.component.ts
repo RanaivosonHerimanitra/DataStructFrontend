@@ -11,6 +11,7 @@ export interface circleData {
   color: string;
   textIndex: number;
 };
+export const LIST_OF_DOM_IDS: string[] = ['#arrayMethodVisual-col1', '#arrayMethodVisual-col2', '#arrayMethodVisual-col3'];
 @Component({
   selector: 'app-array-methods',
   templateUrl: './array-methods.component.html',
@@ -32,7 +33,7 @@ export class ArrayMethodsComponent implements OnInit {
   }
 
   private initializeVisual() {
-    ['#arrayMethodVisual-col1', '#arrayMethodVisual-col2', '#arrayMethodVisual-col3'].forEach((Id:string, index: number) => {
+    LIST_OF_DOM_IDS.forEach((Id:string, index: number) => {
       this.createVisual(Id, index*50);
     });
   }
