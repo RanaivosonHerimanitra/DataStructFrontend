@@ -20,7 +20,8 @@ export interface circleData {
 export class ArrayMethodsComponent implements OnInit {
   public searchKey: number;
   public binarySearchResult$: Observable<BinarySearchResult>;
-  private query: BinarySearchQuery = {Array: [0, 1, 2,14,25], searchKey: 14};
+  private instanceArray: number[] = [];
+  private query: BinarySearchQuery = {Array: [0, 1, 2,14,25], SearchKey: 14};
   constructor(private _snackBar: MatSnackBar, private arrayMethodsService: ArrayMethodsService) {
     this.binarySearchResult$ = this.arrayMethodsService.getBinarySearchResult(this.query);
   }
@@ -95,11 +96,14 @@ export class ArrayMethodsComponent implements OnInit {
   }
 
   public fillArray(): void {
-    const textIndexes: number[] = Array.from(Array(19).keys());
-    for (let k = 0; k < textIndexes.length; k++) {
-      const selectedNode = d3.selectAll("text").filter((data:circleData) => data.textIndex === k);
-      if (selectedNode) selectedNode.text(`<${k}:${Math.floor(Math.random() * 999)}>`).attr("x", (d:circleData) => { return d.x_axis-7; }).attr("y", (d:circleData) => { return d.y_axis-7; });
-    }
+    this.arrayMethodsService.getArrayFromServer()
+    .subscribe((data:any) => {
+      this.instanceArray = data.values;
+      for (let k = 0; k < this.instanceArray.length; k++) {
+        const selectedNode = d3.selectAll("text").filter((data:circleData) => data.textIndex === k);
+        if (selectedNode) selectedNode.text(`<${k}:${Math.floor(Math.random() * 999)}>`).attr("x", (d:circleData) => { return d.x_axis-7; }).attr("y", (d:circleData) => { return d.y_axis-7; });
+      }
+    });
   }
 
   public bindSearchKey(event: any) {
