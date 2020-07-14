@@ -4,6 +4,7 @@ import * as d3 from "d3";
 import { ArrayMethodsService, BinarySearchResult, BinarySearchQuery } from '../../services/array-methods.service';
 import { Observable } from 'rxjs';
 export const NUMBER_MUST_EXIST: string = "Number must exist";
+export const VALUE_IS_FOUND: string = 'Value has been found';
 export interface circleData {
   x_axis: number;
   y_axis: number;
@@ -21,15 +22,14 @@ export const LIST_OF_DOM_IDS: string[] = ['#arrayMethodVisual-col1', '#arrayMeth
 export class ArrayMethodsComponent implements OnInit {
   public searchKey: number;
   public binarySearchResult$: Observable<BinarySearchResult>;
+  public currentIndex: number = 0;
   private instanceArray: number[] = [];
-  private query: BinarySearchQuery = {Array: [0, 1, 2,14,25], SearchKey: 14};
+  private query: BinarySearchQuery = {Array: [], SearchKey: -1};
   constructor(private _snackBar: MatSnackBar, private arrayMethodsService: ArrayMethodsService) {
-    this.binarySearchResult$ = this.arrayMethodsService.getBinarySearchResult(this.query);
   }
 
   ngOnInit(): void {
     this.initializeVisual();
-    this.binarySearchResult$.subscribe((data: BinarySearchResult) => console.log(data));
   }
 
   private initializeVisual() {
@@ -111,15 +111,23 @@ export class ArrayMethodsComponent implements OnInit {
     this.searchKey = event.target.value;
   }
 
-  public findArray(): boolean {
-    if (this.messageOnError()) return false;
-    const chosenCircleId = Math.floor(Math.random() * 19);
-    d3.select(`#circle${chosenCircleId}`).style("fill", "#800080");
-    const data: number[] = Array.from(Array(19).keys());
-    for (let k = 0; k < data.length; k++) {
-      if (k !== chosenCircleId)  d3.select(`#circle${k}`).style("fill", "#69a3b2");
-    }
-    return true;
+  // will depend on some form choices (binary or linear)
+  public findArray() {
+    if (this.messageOnError()) return;
+    this.query.Array = this.instanceArray;
+    this.query.SearchKey = Number(this.searchKey);
+    this.binarySearchResult$ = this.arrayMethodsService.getBinarySearchResult(this.query);
+    this.binarySearchResult$.subscribe((data: BinarySearchResult) => {
+      const id = data.visitedIndex[this.currentIndex];
+      if (id) {
+        d3.select(`#circle${id}`).style("fill", "#800080");
+        if (this.query.SearchKey === this.query.Array[id]) this.messageOnFoundNumber();
+      }
+      for (let k = 0; k < data.visitedIndex.length; k++) {
+        if (k !== id)  d3.select(`#circle${k}`).style("fill", "#69a3b2");
+      }
+      this.currentIndex += 1;
+    });
   }
 
   public deleteArray(): boolean {
@@ -139,5 +147,12 @@ export class ArrayMethodsComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+  private messageOnFoundNumber(): void {
+    this._snackBar.open(VALUE_IS_FOUND, "", {
+      duration: 2500,
+    });
+    return;
   }
 }

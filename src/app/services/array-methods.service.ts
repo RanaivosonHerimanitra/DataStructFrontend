@@ -5,7 +5,7 @@ import { catchError, retry } from 'rxjs/operators';
 export const BINARY_SEARCH_END_POINT = 'https://localhost:5001/dotnetarray/findArray/binarysearch/';
 export const GET_ARRAY_FROM_SERVER = 'https://localhost:5001/dotnetarray/generateArray/';
 export interface BinarySearchResult {
-  VisitedIndex: number[];
+  visitedIndex: number[];
   Found: boolean;
 }
 export interface BinarySearchQuery
