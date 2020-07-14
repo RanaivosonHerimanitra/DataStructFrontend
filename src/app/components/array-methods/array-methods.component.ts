@@ -101,7 +101,7 @@ export class ArrayMethodsComponent implements OnInit {
       this.instanceArray = data.values;
       for (let k = 0; k < this.instanceArray.length; k++) {
         const selectedNode = d3.selectAll("text").filter((data:circleData) => data.textIndex === k);
-        if (selectedNode) selectedNode.text(`<${k}:${Math.floor(Math.random() * 999)}>`).attr("x", (d:circleData) => { return d.x_axis-7; }).attr("y", (d:circleData) => { return d.y_axis-7; });
+        if (selectedNode) selectedNode.text(`<${k}:${this.instanceArray[k]}>`).attr("x", (d:circleData) => { return d.x_axis-7; }).attr("y", (d:circleData) => { return d.y_axis-7; });
       }
     });
   }
