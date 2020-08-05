@@ -3,8 +3,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import * as d3 from "d3";
 import { ArrayMethodsService, BinarySearchResult, BinarySearchQuery } from '../../services/array-methods.service';
 import { Observable } from 'rxjs';
+
 export const NUMBER_MUST_EXIST: string = "Number must exist";
 export const VALUE_IS_FOUND: string = 'Value has been found';
+export const YOU_MUST_FILL_ARRAY: string = 'You must fill array using the Fill button';
+
 export interface circleData {
   x_axis: number;
   y_axis: number;
@@ -12,7 +15,9 @@ export interface circleData {
   color: string;
   textIndex: number;
 };
+
 export const LIST_OF_DOM_IDS: string[] = ['#arrayMethodVisual-col1', '#arrayMethodVisual-col2', '#arrayMethodVisual-col3'];
+
 @Component({
   selector: 'app-array-methods',
   templateUrl: './array-methods.component.html',
@@ -113,6 +118,8 @@ export class ArrayMethodsComponent implements OnInit {
 
   // will depend on some form choices (binary or linear)
   public findArray() {
+    // empeach find if array has not been populated:
+    if (this.messageOnEmptyArray()) return;
     if (this.messageOnError()) return;
     this.query.Array = this.instanceArray;
     this.query.SearchKey = Number(this.searchKey);
@@ -142,6 +149,16 @@ export class ArrayMethodsComponent implements OnInit {
   private messageOnError(): boolean {
     if(!this.searchKey) {
       this._snackBar.open(NUMBER_MUST_EXIST, "", {
+        duration: 2000,
+      });
+      return true;
+    }
+    return false;
+  }
+
+  private messageOnEmptyArray(): boolean {
+    if(this.instanceArray.length === 0) {
+      this._snackBar.open(YOU_MUST_FILL_ARRAY, "", {
         duration: 2000,
       });
       return true;
